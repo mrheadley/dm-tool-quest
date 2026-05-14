@@ -11,6 +11,34 @@ import {
   Info
 } from 'lucide-react';
 
+const toolLogos = {
+  Blender: "blender",
+  Audacity: "audacity",
+  GIMP: "gimp",
+  Inkscape: "inkscape",
+  Pencil2D: null,
+  "Synfig Studio": null,
+  "Paint.NET": null,
+  Flutter: "flutter",
+  "React Native": "react",
+  WordPress: "wordpress",
+  "Adobe Premiere Pro": "adobepremiere",
+  "Adobe Photoshop": "adobephotoshop",
+  "Adobe Illustrator": "adobeillustrator",
+  "Final Cut Pro": null,
+  "DaVinci Resolve": "davinciresolve",
+  Canva: "canva",
+  Figma: "figma",
+  iMovie: null,
+  Wix: "wix",
+  Slack: "slack",
+  Zoom: "zoom",
+  Notion: "notion",
+  "Google Drive": "googledrive",
+  CapCut: null,
+  Trello: "trello",
+};
+
 const toolsData = [
   { name: "Blender", category: "Video / 3D", use: "3D modeling, animation, and video editing", license: "Open Source", url: "https://www.blender.org/" },
   { name: "Audacity", category: "Audio", use: "Multi-track audio recording and editing", license: "Open Source", url: "https://www.audacityteam.org/" },
@@ -37,7 +65,10 @@ const toolsData = [
   { name: "Google Drive", category: "Collaboration", use: "Cloud storage and file collaboration", license: "Proprietary", url: "https://www.google.com/drive/" },
   { name: "CapCut", category: "Video", use: "Mobile-first video editing and effects", license: "Proprietary", url: "https://www.capcut.com/" },
   { name: "Trello", category: "Productivity", use: "Visual project management and task tracking", license: "Proprietary", url: "https://trello.com/" }
-];
+].map(t => ({
+  ...t,
+  logo: toolLogos[t.name] ? `https://cdn.jsdelivr.net/npm/simple-icons/icons/${toolLogos[t.name]}.svg` : null
+}));
 
 const App = () => {
   const [view, setView] = useState('study'); // study, quiz, game
@@ -190,7 +221,12 @@ const App = () => {
                     </button>
                   </div>
                   
-                  <h3 className="text-xl font-bold text-slate-800 mb-1">{tool.name}</h3>
+                  <h3 className="text-xl font-bold text-slate-800 mb-1 flex items-center gap-2">
+                    {tool.logo && (
+                      <img src={tool.logo} alt="" className="w-6 h-6" onError={(e) => e.target.style.display = 'none'} />
+                    )}
+                    {tool.name}
+                  </h3>
                   <p className="text-indigo-600 text-sm font-medium mb-3">{tool.category}</p>
                   <p className="text-slate-600 text-sm line-clamp-2 mb-4 h-10">{tool.use}</p>
                   
@@ -217,11 +253,17 @@ const App = () => {
           </div>
         )}
 
-        {view === 'quiz' && quizQuestion && (
+        {view === 'quiz' && quizQuestion && (() => {
+          const quizTool = toolsData.find(t => t.name === quizQuestion.tool);
+          return (
           <div className="max-w-2xl mx-auto py-12">
             <div className="bg-white rounded-3xl p-8 shadow-xl border border-indigo-50 text-center">
-              <div className="inline-flex p-3 bg-indigo-50 rounded-2xl text-indigo-600 mb-6">
-                <MousePointer2 size={32} />
+              <div className="inline-flex p-3 bg-indigo-50 rounded-2xl text-indigo-600 mb-6 gap-3 items-center">
+                {quizTool?.logo ? (
+                  <img src={quizTool.logo} alt="" className="w-8 h-8" onError={(e) => e.target.style.display = 'none'} />
+                ) : (
+                  <MousePointer2 size={32} />
+                )}
               </div>
               <h2 className="text-2xl font-bold text-slate-800 mb-8">{quizQuestion.questionText}</h2>
               
@@ -254,7 +296,8 @@ const App = () => {
               )}
             </div>
           </div>
-        )}
+        );
+      })()}
       </main>
 
       {/* Footer Info Section */}
