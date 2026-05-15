@@ -11,6 +11,19 @@ import {
   Info
 } from 'lucide-react';
 
+const categoryColors = {
+  "Video / 3D": "bg-blue-100 text-blue-700",
+  "Audio": "bg-purple-100 text-purple-700",
+  "Graphic Design": "bg-pink-100 text-pink-700",
+  "Animation": "bg-orange-100 text-orange-700",
+  "Development": "bg-cyan-100 text-cyan-700",
+  "Web": "bg-teal-100 text-teal-700",
+  "Video": "bg-sky-100 text-sky-700",
+  "UI/UX Design": "bg-violet-100 text-violet-700",
+  "Collaboration": "bg-rose-100 text-rose-700",
+  "Productivity": "bg-yellow-100 text-yellow-700",
+};
+
 const toolLogos = {
   Blender: "blender",
   Audacity: "audacity",
@@ -77,6 +90,8 @@ const App = () => {
   const [completedLessons, setCompletedLessons] = useState([]);
   const [quizQuestion, setQuizQuestion] = useState(null);
   const [quizFeedback, setQuizFeedback] = useState(null);
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [licenseFilter, setLicenseFilter] = useState('');
 
   // Generate a random quiz question
   const generateQuestion = () => {
@@ -128,10 +143,16 @@ const App = () => {
     );
   };
 
-  const filteredTools = toolsData.filter(t => 
-    t.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    t.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const categories = [...new Set(toolsData.map(t => t.category))].sort();
+
+  const filteredTools = toolsData.filter(t => {
+    const matchesSearch = searchTerm === '' || 
+      t.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+      t.category.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = categoryFilter === '' || t.category === categoryFilter;
+    const matchesLicense = licenseFilter === '' || t.license.includes(licenseFilter);
+    return matchesSearch && matchesCategory && matchesLicense;
+  });
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans p-4 md:p-8">
@@ -188,7 +209,7 @@ const App = () => {
 
         {view === 'study' && (
           <div className="space-y-6">
-            {/* Search & Intro */}
+            {/* Search & Filters */}
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
@@ -200,6 +221,27 @@ const App = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
+              <div className="flex flex-1 gap-2">
+                <select
+                  className="flex-1 px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white text-slate-700 text-sm"
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                >
+                  <option value="">All Categories</option>
+                  {categories.map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+                <select
+                  className="flex-1 px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white text-slate-700 text-sm"
+                  value={licenseFilter}
+                  onChange={(e) => setLicenseFilter(e.target.value)}
+                >
+                  <option value="">All Licenses</option>
+                  <option value="Open Source">Open Source</option>
+                  <option value="Proprietary">Proprietary</option>
+                </select>
+              </div>
             </div>
 
             {/* Grid */}
@@ -210,9 +252,14 @@ const App = () => {
                   className={`group relative bg-white border rounded-2xl p-5 transition-all hover:shadow-lg hover:-translate-y-1 ${completedLessons.includes(tool.name) ? 'border-green-200 bg-green-50/30' : 'border-slate-200'}`}
                 >
                   <div className="flex justify-between items-start mb-3">
-                    <span className={`text-xs font-bold px-2 py-1 rounded uppercase tracking-tighter ${tool.license.includes('Open Source') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
-                      {tool.license.includes('Open Source') ? 'Open Source' : 'Proprietary'}
-                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      <span className={`text-xs font-bold px-2 py-1 rounded uppercase tracking-tighter ${tool.license.includes('Open Source') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+                        {tool.license.includes('Open Source') ? 'Open Source' : 'Proprietary'}
+                      </span>
+                      <span className={`text-xs font-bold px-2 py-1 rounded uppercase tracking-tighter ${categoryColors[tool.category] || 'bg-slate-100 text-slate-700'}`}>
+                        {tool.category}
+                      </span>
+                    </div>
                     <button 
                       onClick={() => toggleLesson(tool.name)}
                       className={`p-1.5 rounded-full transition-colors ${completedLessons.includes(tool.name) ? 'text-green-600 bg-green-100' : 'text-slate-300 hover:text-indigo-500 hover:bg-indigo-50'}`}
