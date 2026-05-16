@@ -98,6 +98,7 @@ const App = () => {
   const [quizFeedback, setQuizFeedback] = useState(null);
   const [categoryFilter, setCategoryFilter] = useState('');
   const [licenseFilter, setLicenseFilter] = useState('');
+  const [pricingFilter, setPricingFilter] = useState('');
 
   // Generate a random quiz question
   const generateQuestion = () => {
@@ -157,7 +158,8 @@ const App = () => {
       t.category.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === '' || t.category === categoryFilter;
     const matchesLicense = licenseFilter === '' || t.license.includes(licenseFilter);
-    return matchesSearch && matchesCategory && matchesLicense;
+    const matchesPricing = pricingFilter === '' || t.pricing === pricingFilter;
+    return matchesSearch && matchesCategory && matchesLicense && matchesPricing;
   });
 
   return (
@@ -216,8 +218,8 @@ const App = () => {
         {view === 'study' && (
           <div className="space-y-6">
             {/* Search & Filters */}
-            <div className="flex flex-col md:flex-row gap-4">
-              <div className="relative flex-1">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={20} />
                 <input 
                   type="text" 
@@ -227,27 +229,35 @@ const App = () => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-              <div className="flex flex-1 gap-2">
-                <select
-                  className="flex-1 px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white text-slate-700 text-sm"
-                  value={categoryFilter}
-                  onChange={(e) => setCategoryFilter(e.target.value)}
-                >
-                  <option value="">All Categories</option>
-                  {categories.map(c => (
-                    <option key={c} value={c}>{c}</option>
-                  ))}
-                </select>
-                <select
-                  className="flex-1 px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white text-slate-700 text-sm"
-                  value={licenseFilter}
-                  onChange={(e) => setLicenseFilter(e.target.value)}
-                >
-                  <option value="">All Licenses</option>
-                  <option value="Open Source">Open Source</option>
-                  <option value="Proprietary">Proprietary</option>
-                </select>
-              </div>
+              <select
+                className="px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white text-slate-700 text-sm"
+                value={categoryFilter}
+                onChange={(e) => setCategoryFilter(e.target.value)}
+              >
+                <option value="">All Categories</option>
+                {categories.map(c => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+              <select
+                className="px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white text-slate-700 text-sm"
+                value={pricingFilter}
+                onChange={(e) => setPricingFilter(e.target.value)}
+              >
+                <option value="">All Pricing</option>
+                <option value="Free">Free</option>
+                <option value="Paid">Paid</option>
+                <option value="Freemium">Freemium</option>
+              </select>
+              <select
+                className="px-3 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all bg-white text-slate-700 text-sm"
+                value={licenseFilter}
+                onChange={(e) => setLicenseFilter(e.target.value)}
+              >
+                <option value="">All Licenses</option>
+                <option value="Open Source">Open Source</option>
+                <option value="Proprietary">Proprietary</option>
+              </select>
             </div>
 
             {/* Grid */}
