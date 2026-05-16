@@ -11,6 +11,12 @@ import {
   Info
 } from 'lucide-react';
 
+const pricingColors = {
+  Free: "bg-green-100 text-green-700",
+  Paid: "bg-red-100 text-red-700",
+  Freemium: "bg-lime-100 text-lime-700",
+};
+
 const categoryColors = {
   "Video / 3D": "bg-blue-100 text-blue-700",
   "Audio": "bg-purple-100 text-purple-700",
@@ -53,31 +59,31 @@ const toolLogos = {
 };
 
 const toolsData = [
-  { name: "Blender", category: "Video / 3D", use: "3D modeling, animation, and video editing", license: "Open Source", url: "https://www.blender.org/" },
-  { name: "Audacity", category: "Audio", use: "Multi-track audio recording and editing", license: "Open Source", url: "https://www.audacityteam.org/" },
-  { name: "GIMP", category: "Graphic Design", use: "Raster image manipulation and photo retouching", license: "Open Source", url: "https://www.gimp.org/" },
-  { name: "Inkscape", category: "Graphic Design", use: "Vector graphics editing (SVG format)", license: "Open Source", url: "https://inkscape.org/" },
-  { name: "Pencil2D", category: "Animation", use: "Traditional 2D hand-drawn animation", license: "Open Source", url: "https://www.pencil2d.org/" },
-  { name: "Synfig Studio", category: "Animation", use: "Vector-based 2D animation", license: "Open Source", url: "https://www.synfig.org/" },
-  { name: "Paint.NET", category: "Graphic Design", use: "Raster image editing and photo manipulation", license: "Open Source (Core) / Proprietary (Installer)", url: "https://www.getpaint.net/" },
-  { name: "Flutter", category: "Development", use: "Cross-platform mobile and web app development", license: "Open Source", url: "https://flutter.dev/" },
-  { name: "React Native", category: "Development", use: "Mobile application framework (JavaScript-based)", license: "Open Source", url: "https://reactnative.dev/" },
-  { name: "WordPress", category: "Web", use: "Content management (CMS) and web publishing", license: "Open Source", url: "https://wordpress.org/" },
-  { name: "Adobe Premiere Pro", category: "Video", use: "Professional non-linear video editing", license: "Proprietary", url: "https://www.adobe.com/products/premiere.html" },
-  { name: "Adobe Photoshop", category: "Graphic Design", use: "Professional raster graphics and photo editing", license: "Proprietary", url: "https://www.adobe.com/products/photoshop.html" },
-  { name: "Adobe Illustrator", category: "Graphic Design", use: "Professional vector graphics design", license: "Proprietary", url: "https://www.adobe.com/products/illustrator.html" },
-  { name: "Final Cut Pro", category: "Video", use: "Professional video editing for macOS", license: "Proprietary", url: "https://www.apple.com/final-cut-pro/" },
-  { name: "DaVinci Resolve", category: "Video", use: "Video editing, color grading, and VFX", license: "Proprietary (Freemium)", url: "https://www.blackmagicdesign.com/products/davinciresolve" },
-  { name: "Canva", category: "Graphic Design", use: "Graphic design and template-based creation", license: "Proprietary", url: "https://www.canva.com/" },
-  { name: "Figma", category: "UI/UX Design", use: "Interface design (UI/UX) and prototyping", license: "Proprietary", url: "https://www.figma.com/" },
-  { name: "iMovie", category: "Video", use: "Consumer-level video editing (Apple devices)", license: "Proprietary", url: "https://www.apple.com/imovie/" },
-  { name: "Wix", category: "Web", use: "Website building and hosting", license: "Proprietary", url: "https://www.wix.com/" },
-  { name: "Slack", category: "Collaboration", use: "Team communication and instant messaging", license: "Proprietary", url: "https://slack.com/" },
-  { name: "Zoom", category: "Collaboration", use: "Video conferencing and virtual meetings", license: "Proprietary", url: "https://zoom.us/" },
-  { name: "Notion", category: "Productivity", use: "Project management, note-taking, and wikis", license: "Proprietary", url: "https://www.notion.so/" },
-  { name: "Google Drive", category: "Collaboration", use: "Cloud storage and file collaboration", license: "Proprietary", url: "https://www.google.com/drive/" },
-  { name: "CapCut", category: "Video", use: "Mobile-first video editing and effects", license: "Proprietary", url: "https://www.capcut.com/" },
-  { name: "Trello", category: "Productivity", use: "Visual project management and task tracking", license: "Proprietary", url: "https://trello.com/" }
+  { name: "Blender", category: "Video / 3D", use: "3D modeling, animation, and video editing", license: "Open Source", pricing: "Free", url: "https://www.blender.org/" },
+  { name: "Audacity", category: "Audio", use: "Multi-track audio recording and editing", license: "Open Source", pricing: "Free", url: "https://www.audacityteam.org/" },
+  { name: "GIMP", category: "Graphic Design", use: "Raster image manipulation and photo retouching", license: "Open Source", pricing: "Free", url: "https://www.gimp.org/" },
+  { name: "Inkscape", category: "Graphic Design", use: "Vector graphics editing (SVG format)", license: "Open Source", pricing: "Free", url: "https://inkscape.org/" },
+  { name: "Pencil2D", category: "Animation", use: "Traditional 2D hand-drawn animation", license: "Open Source", pricing: "Free", url: "https://www.pencil2d.org/" },
+  { name: "Synfig Studio", category: "Animation", use: "Vector-based 2D animation", license: "Open Source", pricing: "Free", url: "https://www.synfig.org/" },
+  { name: "Paint.NET", category: "Graphic Design", use: "Raster image editing and photo manipulation", license: "Open Source (Core) / Proprietary (Installer)", pricing: "Free", url: "https://www.getpaint.net/" },
+  { name: "Flutter", category: "Development", use: "Cross-platform mobile and web app development", license: "Open Source", pricing: "Free", url: "https://flutter.dev/" },
+  { name: "React Native", category: "Development", use: "Mobile application framework (JavaScript-based)", license: "Open Source", pricing: "Free", url: "https://reactnative.dev/" },
+  { name: "WordPress", category: "Web", use: "Content management (CMS) and web publishing", license: "Open Source", pricing: "Free", url: "https://wordpress.org/" },
+  { name: "Adobe Premiere Pro", category: "Video", use: "Professional non-linear video editing", license: "Proprietary", pricing: "Paid", url: "https://www.adobe.com/products/premiere.html" },
+  { name: "Adobe Photoshop", category: "Graphic Design", use: "Professional raster graphics and photo editing", license: "Proprietary", pricing: "Paid", url: "https://www.adobe.com/products/photoshop.html" },
+  { name: "Adobe Illustrator", category: "Graphic Design", use: "Professional vector graphics design", license: "Proprietary", pricing: "Paid", url: "https://www.adobe.com/products/illustrator.html" },
+  { name: "Final Cut Pro", category: "Video", use: "Professional video editing for macOS", license: "Proprietary", pricing: "Paid", url: "https://www.apple.com/final-cut-pro/" },
+  { name: "DaVinci Resolve", category: "Video", use: "Video editing, color grading, and VFX", license: "Proprietary (Freemium)", pricing: "Freemium", url: "https://www.blackmagicdesign.com/products/davinciresolve" },
+  { name: "Canva", category: "Graphic Design", use: "Graphic design and template-based creation", license: "Proprietary", pricing: "Freemium", url: "https://www.canva.com/" },
+  { name: "Figma", category: "UI/UX Design", use: "Interface design (UI/UX) and prototyping", license: "Proprietary", pricing: "Freemium", url: "https://www.figma.com/" },
+  { name: "iMovie", category: "Video", use: "Consumer-level video editing (Apple devices)", license: "Proprietary", pricing: "Free", url: "https://www.apple.com/imovie/" },
+  { name: "Wix", category: "Web", use: "Website building and hosting", license: "Proprietary", pricing: "Freemium", url: "https://www.wix.com/" },
+  { name: "Slack", category: "Collaboration", use: "Team communication and instant messaging", license: "Proprietary", pricing: "Freemium", url: "https://slack.com/" },
+  { name: "Zoom", category: "Collaboration", use: "Video conferencing and virtual meetings", license: "Proprietary", pricing: "Freemium", url: "https://zoom.us/" },
+  { name: "Notion", category: "Productivity", use: "Project management, note-taking, and wikis", license: "Proprietary", pricing: "Freemium", url: "https://www.notion.so/" },
+  { name: "Google Drive", category: "Collaboration", use: "Cloud storage and file collaboration", license: "Proprietary", pricing: "Freemium", url: "https://www.google.com/drive/" },
+  { name: "CapCut", category: "Video", use: "Mobile-first video editing and effects", license: "Proprietary", pricing: "Freemium", url: "https://www.capcut.com/" },
+  { name: "Trello", category: "Productivity", use: "Visual project management and task tracking", license: "Proprietary", pricing: "Freemium", url: "https://trello.com/" }
 ].map(t => ({
   ...t,
   logo: toolLogos[t.name] ? `https://cdn.jsdelivr.net/npm/simple-icons/icons/${toolLogos[t.name]}.svg` : null
@@ -253,6 +259,9 @@ const App = () => {
                 >
                   <div className="flex justify-between items-start mb-3">
                     <div className="flex flex-wrap gap-1.5">
+                      <span className={`text-xs font-bold px-2 py-1 rounded uppercase tracking-tighter ${pricingColors[tool.pricing]}`}>
+                        {tool.pricing}
+                      </span>
                       <span className={`text-xs font-bold px-2 py-1 rounded uppercase tracking-tighter ${tool.license.includes('Open Source') ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
                         {tool.license.includes('Open Source') ? 'Open Source' : 'Proprietary'}
                       </span>
